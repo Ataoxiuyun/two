@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script type="text/javascript">
+    let person={
+      name:'张三',
+      age:'18'
+    }
+    // 模拟Vue2中实现响应式
+    // #region
+    // let p={};
+    // Object.defineProperty(p,'name',{
+    //   get(){//有人读取name时调用
+    //     return person.name
+    //   },
+    //   set(value){//有人修改name时调用
+    //     console.log('修改name，更新页面')
+    //     person.name=value
+    //   },
+    // })
+    // #endregion
+    // Vue3
+    // #region
+    //  const p=new Proxy(person,{
+    //   //  获取属性
+    //   //  target=person
+    //   get(target,propName){
+    //     // propName 读取的字段
+    //     console.log('有人读取了p的属性',target,propName)
+    //     return target[propName]//返回读取的内容
+    //   },
+    //   // 修改或新增属性
+    //   set(target,propName,value){
+    //     console.log(`修改p身上的${propName}属性`)
+    //     target[propName]=value//更改的内容
+    //   },
+    //   deleteProperty(target,propName){
+    //     // 删除属性
+    //     console.log(`删除了p${propName}`)
+    //     return delete target[propName]
+    //   }
+    //  })
+    // #endregion
+     const p=new Proxy(person,{
+      //  获取属性
+      //  target=person
+      get(target,propName){
+        // propName 读取的字段
+        console.log('有人读取了p的属性',target,propName)
+        // return target[propName]//返回读取的内容
+        return Reflect.get(target,propName)
+      },
+      // 修改或新增属性
+      set(target,propName,value){
+        console.log(`修改p身上的${propName}属性`)
+        // target[propName]=value//更改的内容
+        Reflect.set(target,propName,value)//target.propName=value
+      },
+      deleteProperty(target,propName){
+        // 删除属性
+        console.log(`删除了p${propName}`)
+        // return delete target[propName]
+        return Reflect.deleteProperty(target,propName)
+      }
+     })
+    // +++++
+    var obj={a:1,b:2}
+     
+
+  </script> 
+</body>
+</html>
